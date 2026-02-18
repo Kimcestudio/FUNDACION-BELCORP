@@ -40,6 +40,9 @@ export default function Preinscripcion() {
     México: '+52',
     Perú: '+51',
     'República Dominicana': '+1',
+    'El Salvador': '+503',
+    Guatemala: '+502',
+    'Costa Rica': '+506',
   };
 
   const handleInputChange = (e) => {
@@ -62,21 +65,28 @@ export default function Preinscripcion() {
   e.preventDefault();
 
   try {
-    const response = await fetch("https://script.google.com/macros/s/AKfycbyaM_UX67rTbJ8Oo0Ihlh-YTFhfpKHNFCQyHnXuEZgvWHjp7a-hLWpoG9H4ZL2DG-Qzxg/exec", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded", // Importante para que e.parameter funcione bien
-      },
-      body: new URLSearchParams({
-        nombre: formData.nombre,
-        correo: formData.correo,
-        pais: formData.pais,
-        codigo: formData.codigo,
-        telefono: formData.telefono,
-        consultora: formData.consultora,
-        estudios: formData.estudios
-      }).toString(),
+    // Formato esperado por Apps Script Web App en doPost(e): e.parameter
+    const payload = new URLSearchParams({
+      nombre: formData.nombre,
+      pais: formData.pais,
+      correo: formData.correo,
+      codigo: formData.codigo,
+      telefono: formData.telefono,
+      consultoraBelcorp: formData.consultora,
+      nivelEstudios: formData.estudios
     });
+
+    const response = await fetch("https://script.google.com/macros/s/AKfycbxPOU1rHj6KIe6xs3Mf1qCOBXnCFHd-7lMXiSfvg8EJlN1Hge24Njhl-EuirwaQcrNF/exec", {
+      method: "POST",
+      body: payload,
+    });
+
+    const result = await response.json();
+
+    if (!result.ok) {
+      alert(result.message || "Error al enviar. Intenta nuevamente.");
+      return;
+    }
 
     alert("Formulario enviado con éxito.");
     setFormData({
