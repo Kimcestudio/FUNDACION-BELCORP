@@ -65,7 +65,8 @@ export default function Preinscripcion() {
   e.preventDefault();
 
   try {
-    const payload = {
+    // Formato esperado por Apps Script Web App en doPost(e): e.parameter
+    const payload = new URLSearchParams({
       nombre: formData.nombre,
       pais: formData.pais,
       correo: formData.correo,
@@ -73,14 +74,11 @@ export default function Preinscripcion() {
       telefono: formData.telefono,
       consultoraBelcorp: formData.consultora,
       nivelEstudios: formData.estudios
-    };
+    });
 
     const response = await fetch("https://script.google.com/macros/s/AKfycbxPOU1rHj6KIe6xs3Mf1qCOBXnCFHd-7lMXiSfvg8EJlN1Hge24Njhl-EuirwaQcrNF/exec", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
+      body: payload,
     });
 
     alert("Formulario enviado con éxito.");
