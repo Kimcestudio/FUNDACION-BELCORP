@@ -18,6 +18,9 @@ const selectStyle = {
   color: '#8a4fc1',
 };
 
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbxPOU1rHj6KIe6xs3Mf1qCOBXnCFHd-7lMXiSfvg8EJlN1Hge24Njhl-EuirwaQcrNF/exec";
+
 export default function Preinscripcion() {
   const [scrolled, setScrolled] = useState(false);
   const [showButton, setShowButton] = useState(false);
@@ -61,47 +64,41 @@ export default function Preinscripcion() {
     }
   };
 
-  const handleSubmit = async (e) => {
-  e.preventDefault();
+  const { nombre, pais, correo, codigo, telefono } = formData;
+  const consultoraBelcorp = formData.consultora;
+  const nivelEstudios = formData.estudios;
 
-  try {
-    const body = new URLSearchParams({
-      nombre: formData.nombre,
-      pais: formData.pais,
-      correo: formData.correo,
-      codigo: formData.codigo,
-      telefono: formData.telefono,
-      consultoraBelcorp: formData.consultora,
-      nivelEstudios: formData.estudios
-    });
+  async function handleSubmit(e) {
+    e.preventDefault();
 
-    const res = await fetch("https://script.google.com/macros/s/AKfycbxPOU1rHj6KIe6xs3Mf1qCOBXnCFHd-7lMXiSfvg8EJlN1Hge24Njhl-EuirwaQcrNF/exec", {
-      method: "POST",
-      body,
-    });
+    try {
+      const body = new URLSearchParams({
+        nombre,
+        pais,
+        correo,
+        codigo,
+        telefono,
+        consultoraBelcorp,
+        nivelEstudios,
+      });
 
-    const result = await res.json();
+      const res = await fetch(SCRIPT_URL, {
+        method: "POST",
+        body,
+      });
 
-    if (!result.ok) {
-      alert(result.message || "Error al enviar. Intenta nuevamente.");
-      return;
+      const data = await res.json();
+
+      if (!data.ok) {
+        throw new Error(data.message || "Error al guardar");
+      }
+
+      alert("Formulario enviado con éxito ✅");
+    } catch (error) {
+      console.error("Error en submit:", error);
+      alert(String(error?.message || error));
     }
-
-    alert("Formulario enviado con éxito.");
-    setFormData({
-      nombre: '',
-      correo: '',
-      pais: '',
-      codigo: '',
-      telefono: '',
-      consultora: '',
-      estudios: ''
-    });
-  } catch (error) {
-    console.error("Error al enviar:", error);
-    alert("Error al enviar. Intenta nuevamente.");
   }
-};
 
   useEffect(() => {
     const handleScroll = () => {
