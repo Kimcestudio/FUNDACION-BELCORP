@@ -23,13 +23,12 @@ function doPost(e) {
 }
 
 function parseRequest_(e) {
-  // 1) Prioridad para form-urlencoded (URLSearchParams desde frontend)
+  // a) Prioridad para form-urlencoded en e.parameter
   var hasParameters = e && e.parameter && Object.keys(e.parameter).length > 0;
   if (hasParameters) {
     return mapPayload_(e.parameter);
   }
 
-  // 2) Solo intentar JSON.parse cuando realmente llega JSON
   var raw = e && e.postData && typeof e.postData.contents === 'string'
     ? e.postData.contents.trim()
     : '';
@@ -39,21 +38,44 @@ function parseRequest_(e) {
   }
 
   var contentType = (e.postData.type || '').toLowerCase();
-  var looksLikeJson = contentType.indexOf('application/json') !== -1 || raw[0] === '{' || raw[0] === '[';
 
-  if (looksLikeJson) {
+  // b) JSON en postData.contents
+  if (contentType.indexOf('application/json') !== -1 || raw[0] === '{' || raw[0] === '[') {
     try {
       var parsed = JSON.parse(raw);
       if (parsed && typeof parsed === 'object') {
         return mapPayload_(parsed);
       }
     } catch (err) {
-      // 3) Try/catch para no romperse cuando el cuerpo no sea JSON válido
       Logger.log('parseRequest_ JSON inválido: ' + err);
     }
   }
 
+  // c) x-www-form-urlencoded por split + decodeURIComponent
+  if (contentType.indexOf('application/x-www-form-urlencoded') !== -1 || raw.indexOf('=') !== -1) {
+    return mapPayload_(parseFormUrlEncoded_(raw));
+  }
+
   return {};
+}
+
+function parseFormUrlEncoded_(raw) {
+  var obj = {};
+  var pairs = raw.split('&');
+
+  for (var i = 0; i < pairs.length; i++) {
+    if (!pairs[i]) continue;
+
+    var parts = pairs[i].split('=');
+    var key = decodeURIComponent((parts[0] || '').replace(/\+/g, ' '));
+    var value = decodeURIComponent((parts.slice(1).join('=') || '').replace(/\+/g, ' '));
+
+    if (key) {
+      obj[key] = value;
+    }
+  }
+
+  return obj;
 }
 
 function mapPayload_(source) {

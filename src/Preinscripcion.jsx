@@ -64,36 +64,47 @@ export default function Preinscripcion() {
     }
   };
 
-  const { nombre, pais, correo, codigo, telefono } = formData;
-  const consultoraBelcorp = formData.consultora;
-  const nivelEstudios = formData.estudios;
-
   async function handleSubmit(e) {
     e.preventDefault();
 
-    try {
-      const body = new URLSearchParams({
-        nombre,
-        pais,
-        correo,
-        codigo,
-        telefono,
-        consultoraBelcorp,
-        nivelEstudios,
-      });
+    const payload = {
+      nombre: formData.nombre,
+      pais: formData.pais,
+      correo: formData.correo,
+      codigo: formData.codigo,
+      telefono: formData.telefono,
+      consultoraBelcorp: formData.consultora,
+      nivelEstudios: formData.estudios,
+    };
 
+    try {
+      console.log('POST URL:', SCRIPT_URL);
       const res = await fetch(SCRIPT_URL, {
         method: "POST",
-        body,
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
+      console.log('STATUS:', res.status);
+      const text = await res.text();
+      console.log('RAW RESPONSE:', text);
+
+      const data = JSON.parse(text);
 
       if (!data.ok) {
         throw new Error(data.message || "Error al guardar");
       }
 
       alert("Formulario enviado con éxito ✅");
+      setFormData({
+        nombre: '',
+        correo: '',
+        pais: '',
+        codigo: '',
+        telefono: '',
+        consultora: '',
+        estudios: ''
+      });
     } catch (error) {
       console.error("Error en submit:", error);
       alert(String(error?.message || error));
