@@ -81,6 +81,13 @@ export default function Preinscripcion() {
       body: payload,
     });
 
+    const result = await response.json();
+
+    if (!result.ok) {
+      alert(result.message || "Error al enviar. Intenta nuevamente.");
+      return;
+    }
+
     alert("Formulario enviado con éxito.");
     setFormData({
       nombre: '',
