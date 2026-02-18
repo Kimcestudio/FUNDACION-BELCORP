@@ -184,7 +184,7 @@ const location = useLocation();
       ÚNETE A NOSOTRAS
     </h1>
     <p style={{ fontSize: '1.6rem', fontWeight: '300', marginBottom: '14px' }}>
-      MUJERES SIN LÍMITES 2026
+      Pronto Mujeres Sin Límites 2026
     </p>
     <motion.button
       onClick={() => setShowDatosModal(true)}
@@ -202,7 +202,7 @@ const location = useLocation();
         cursor: 'pointer'
       }}
     >
-      PREÍNSCRIBETE
+      PREINSCRÍBETE AQUÍ
     </motion.button>
   </div>
 </section>

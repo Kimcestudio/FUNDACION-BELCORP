@@ -18,6 +18,9 @@ const selectStyle = {
   color: '#8a4fc1',
 };
 
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbxPOU1rHj6KIe6xs3Mf1qCOBXnCFHd-7lMXiSfvg8EJlN1Hge24Njhl-EuirwaQcrNF/exec";
+
 export default function Preinscripcion() {
   const [scrolled, setScrolled] = useState(false);
   const [showButton, setShowButton] = useState(false);
@@ -40,6 +43,9 @@ export default function Preinscripcion() {
     México: '+52',
     Perú: '+51',
     'República Dominicana': '+1',
+    'El Salvador': '+503',
+    Guatemala: '+502',
+    'Costa Rica': '+506',
   };
 
   const handleInputChange = (e) => {
@@ -58,41 +64,41 @@ export default function Preinscripcion() {
     }
   };
 
-  const handleSubmit = async (e) => {
-  e.preventDefault();
+  const { nombre, pais, correo, codigo, telefono } = formData;
+  const consultoraBelcorp = formData.consultora;
+  const nivelEstudios = formData.estudios;
 
-  try {
-    const response = await fetch("https://script.google.com/macros/s/AKfycbyaM_UX67rTbJ8Oo0Ihlh-YTFhfpKHNFCQyHnXuEZgvWHjp7a-hLWpoG9H4ZL2DG-Qzxg/exec", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded", // Importante para que e.parameter funcione bien
-      },
-      body: new URLSearchParams({
-        nombre: formData.nombre,
-        correo: formData.correo,
-        pais: formData.pais,
-        codigo: formData.codigo,
-        telefono: formData.telefono,
-        consultora: formData.consultora,
-        estudios: formData.estudios
-      }).toString(),
-    });
+  async function handleSubmit(e) {
+    e.preventDefault();
 
-    alert("Formulario enviado con éxito.");
-    setFormData({
-      nombre: '',
-      correo: '',
-      pais: '',
-      codigo: '',
-      telefono: '',
-      consultora: '',
-      estudios: ''
-    });
-  } catch (error) {
-    console.error("Error al enviar:", error);
-    alert("Error al enviar. Intenta nuevamente.");
+    try {
+      const body = new URLSearchParams({
+        nombre,
+        pais,
+        correo,
+        codigo,
+        telefono,
+        consultoraBelcorp,
+        nivelEstudios,
+      });
+
+      const res = await fetch(SCRIPT_URL, {
+        method: "POST",
+        body,
+      });
+
+      const data = await res.json();
+
+      if (!data.ok) {
+        throw new Error(data.message || "Error al guardar");
+      }
+
+      alert("Formulario enviado con éxito ✅");
+    } catch (error) {
+      console.error("Error en submit:", error);
+      alert(String(error?.message || error));
+    }
   }
-};
 
   useEffect(() => {
     const handleScroll = () => {
