@@ -65,20 +65,22 @@ export default function Preinscripcion() {
   e.preventDefault();
 
   try {
-    const response = await fetch("https://script.google.com/macros/s/AKfycbyaM_UX67rTbJ8Oo0Ihlh-YTFhfpKHNFCQyHnXuEZgvWHjp7a-hLWpoG9H4ZL2DG-Qzxg/exec", {
+    const payload = {
+      nombre: formData.nombre,
+      pais: formData.pais,
+      correo: formData.correo,
+      codigo: formData.codigo,
+      telefono: formData.telefono,
+      consultoraBelcorp: formData.consultora,
+      nivelEstudios: formData.estudios
+    };
+
+    const response = await fetch("https://script.google.com/macros/s/AKfycbxPOU1rHj6KIe6xs3Mf1qCOBXnCFHd-7lMXiSfvg8EJlN1Hge24Njhl-EuirwaQcrNF/exec", {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded", // Importante para que e.parameter funcione bien
+        "Content-Type": "application/json",
       },
-      body: new URLSearchParams({
-        nombre: formData.nombre,
-        correo: formData.correo,
-        pais: formData.pais,
-        codigo: formData.codigo,
-        telefono: formData.telefono,
-        consultora: formData.consultora,
-        estudios: formData.estudios
-      }).toString(),
+      body: JSON.stringify(payload),
     });
 
     alert("Formulario enviado con éxito.");
