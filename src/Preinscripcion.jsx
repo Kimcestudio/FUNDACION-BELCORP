@@ -40,6 +40,9 @@ export default function Preinscripcion() {
     México: '+52',
     Perú: '+51',
     'República Dominicana': '+1',
+    'El Salvador': '+503',
+    Guatemala: '+502',
+    'Costa Rica': '+506',
   };
 
   const handleInputChange = (e) => {
