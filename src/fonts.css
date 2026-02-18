@@ -1,0 +1,90 @@
+/* MuseoSans */
+@font-face {
+  font-family: 'MuseoSans';
+  src: url('./assets/fonts/MuseoSans_100.otf') format('opentype');
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: 'MuseoSans';
+  src: url('./assets/fonts/MuseoSans_300.otf') format('opentype');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'MuseoSans';
+  src: url('./assets/fonts/MuseoSans_500.otf') format('opentype');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'MuseoSans';
+  src: url('./assets/fonts/MuseoSans_700.otf') format('opentype');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'MuseoSans';
+  src: url('./assets/fonts/MuseoSans_900.otf') format('opentype');
+  font-weight: 900;
+}
+
+/* Urbanist */
+@font-face {
+  font-family: 'Urbanist';
+  src: url('./assets/fontsurbanist/Urbanist-Thin.ttf') format('truetype');
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: 'Urbanist';
+  src: url('./assets/fontsurbanist/Urbanist-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: 'Urbanist';
+  src: url('./assets/fontsurbanist/Urbanist-Light.ttf') format('truetype');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Urbanist';
+  src: url('./assets/fontsurbanist/Urbanist-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Urbanist';
+  src: url('./assets/fontsurbanist/Urbanist-Medium.ttf') format('truetype');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Urbanist';
+  src: url('./assets/fontsurbanist/Urbanist-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Urbanist';
+  src: url('./assets/fontsurbanist/Urbanist-Bold.ttf') format('truetype');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Urbanist';
+  src: url('./assets/fontsurbanist/Urbanist-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: 'Urbanist';
+  src: url('./assets/fontsurbanist/Urbanist-Black.ttf') format('truetype');
+  font-weight: 900;
+}
+
+
+body {
+  font-family: 'Urbanist', sans-serif;
+}

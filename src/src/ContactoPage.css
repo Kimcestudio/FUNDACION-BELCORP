@@ -1,0 +1,8 @@
+select:invalid,
+select.placeholder {
+  color: #999999 !important; /* gris igual al input placeholder */
+}
+
+select:valid {
+  color: #4E329B; /* mismo morado que texto activo */
+}
