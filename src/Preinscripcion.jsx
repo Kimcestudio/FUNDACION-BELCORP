@@ -65,8 +65,7 @@ export default function Preinscripcion() {
   e.preventDefault();
 
   try {
-    // Formato esperado por Apps Script Web App en doPost(e): e.parameter
-    const payload = new URLSearchParams({
+    const body = new URLSearchParams({
       nombre: formData.nombre,
       pais: formData.pais,
       correo: formData.correo,
@@ -76,12 +75,12 @@ export default function Preinscripcion() {
       nivelEstudios: formData.estudios
     });
 
-    const response = await fetch("https://script.google.com/macros/s/AKfycbxPOU1rHj6KIe6xs3Mf1qCOBXnCFHd-7lMXiSfvg8EJlN1Hge24Njhl-EuirwaQcrNF/exec", {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbxPOU1rHj6KIe6xs3Mf1qCOBXnCFHd-7lMXiSfvg8EJlN1Hge24Njhl-EuirwaQcrNF/exec", {
       method: "POST",
-      body: payload,
+      body,
     });
 
-    const result = await response.json();
+    const result = await res.json();
 
     if (!result.ok) {
       alert(result.message || "Error al enviar. Intenta nuevamente.");
